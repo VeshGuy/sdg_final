@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
-export default function Navbar({ role }) {
+export default function Navbar({ role, setRole }) {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -14,6 +14,13 @@ export default function Navbar({ role }) {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('role');
+    setRole('');
+    navigate('/login');
+  };
 
   return (
     <motion.nav
@@ -35,8 +42,9 @@ export default function Navbar({ role }) {
               {[
                 { name: 'Home', path: '/' },
                 { name: 'Projects', path: '/projects' },
-                { name: 'About', path: '/about' },
-                { name: 'Contact', path: '/contact' }
+                //{ name: 'About', path: '/about' },
+                //{ name: 'Contact', path: '/contact' },
+                { name: 'SOS', path: '/sos' } 
               ].map((item) => (
                 <Link
                   key={item.name}
@@ -52,17 +60,19 @@ export default function Navbar({ role }) {
                   {item.name}
                 </Link>
               ))}
-              {role && (
-                <Link to="/dashboard" className="nav-button">
-                  Dashboard
-                </Link>
-              )}
-              {role === 'ngo' && (
-                <Link to="/create-project" className="nav-button">
-                  Create Project
-                </Link>
-              )}
-              {!role && (
+              {role ? (
+                <>
+                  <Link to="/dashboard" className="nav-button">
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="bg-red-500 text-white px-4 py-2 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}

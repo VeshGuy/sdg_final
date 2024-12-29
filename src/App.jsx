@@ -8,9 +8,12 @@ import Testimonials from './components/Testimonials';
 import Footer from './components/Footer';
 import Login from './components/Login';
 import Signup from './components/Signup';
-import NGODashboard from './components/Dashboard';
+import NGODashboard from './components/NGODashboard';
 import VolunteerDashboard from './components/VolunteerDashboard';
 import CreateProject from './components/CreateProject';
+import NGOSignup from './components/NGOSignup';
+import VolunteerSignup from './components/VolunteerSignup';
+import SOSPage from './components/SOSPage'; // Import SOSPage
 
 export default function App() {
   const [role, setRole] = useState(localStorage.getItem('role') || '');
@@ -25,7 +28,7 @@ export default function App() {
   return (
     <Router>
       <div className="min-h-screen">
-        <Navbar role={role} />
+        <Navbar role={role} setRole={setRole} />
         <Routes>
           <Route path="/" element={
             <>
@@ -37,10 +40,15 @@ export default function App() {
           <Route path="/projects" element={<ProjectsPage role={role} />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/ngo-signup" element={<NGOSignup />} />
+          <Route path="/volunteer-signup" element={<VolunteerSignup />} />
+          <Route path="/volunteer-dashboard" element={<VolunteerDashboard />} />
+          <Route path="/ngo-dashboard" element={<NGODashboard />} />
           <Route path="/dashboard" element={
-            role === 'ngo' ? <Dashboard /> : role === 'volunteer' ? <VolunteerDashboard /> : <Navigate to="/login" />
+            role === 'ngo' ? <NGODashboard /> : role === 'volunteer' ? <VolunteerDashboard /> : <Navigate to="/login" />
           } />
           <Route path="/create-project" element={<CreateProject />} />
+          <Route path="/sos" element={<SOSPage />} /> {/* Add SOSPage route */}
         </Routes>
         <Footer />
       </div>

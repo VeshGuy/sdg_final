@@ -1,7 +1,44 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
+
+const volunteersData = [
+  {
+    uniqueId: 'volunteer1',
+    password: 'password1',
+    role: 'volunteer'
+  },
+  {
+    uniqueId: 'volunteer2',
+    password: 'password2',
+    role: 'volunteer'
+  },
+  {
+    uniqueId: 'volunteer3',
+    password: 'password3',
+    role: 'volunteer'
+  }
+];
+
+const ngosData = [
+  {
+    uniqueId: 'ngo1',
+    password: 'password1',
+    role: 'ngo'
+  },
+  {
+    uniqueId: 'ngo2',
+    password: 'password2',
+    role: 'ngo'
+  },
+  {
+    uniqueId: 'ngo3',
+    password: 'password3',
+    role: 'ngo'
+  }
+];
+
+const usersData = [...volunteersData, ...ngosData];
 
 export default function Login() {
   const [uniqueId, setUniqueId] = useState('');
@@ -10,20 +47,19 @@ export default function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('/login', { unique_id: uniqueId, password, role });
-      // Handle login success
-      const user = response.data.user;
-      // Store user data in local storage or context
-      localStorage.setItem('user', JSON.stringify(user));
+    const user = usersData.find(v => v.uniqueId === uniqueId && v.password === password && v.role === role);
+    if (user) {
+      localStorage.setItem('user', JSON.stringify({ uniqueId, role }));
       localStorage.setItem('role', role);
-      // Redirect to dashboard
-      navigate('/dashboard');
-    } catch (error) {
-      // Handle login error
-      setError('Invalid credentials. Please try again.');
+      if (role === 'volunteer') {
+        navigate('/volunteer-dashboard');
+      } else {
+        navigate('/ngo-dashboard');
+      }
+    } else {
+      setError('Invalid credentials');
     }
   };
 

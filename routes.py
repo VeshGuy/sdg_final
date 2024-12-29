@@ -153,3 +153,46 @@ def ngo_stats():
         'verification_status': 'Approved'
     }
     return jsonify(stats), 200
+
+@app.route('/api/volunteer/stats', methods=['GET'])
+def get_volunteer_stats():
+    stats = {
+        'projects_working': 5,
+        'projects_applied': 10,
+    }
+    return jsonify(stats), 200
+
+@app.route('/api/volunteer/details', methods=['GET'])
+def get_volunteer_details():
+    volunteer = {
+        'name': 'John Doe',
+        'picture': 'https://via.placeholder.com/150',
+        'details': 'Experienced volunteer with a passion for environmental projects.'
+    }
+    return jsonify(volunteer), 200
+
+@app.route('/api/projects', methods=['GET'])
+def get_projects():
+    projects = [
+        {
+            'project_id': 1,
+            'title': 'Clean Water Initiative',
+            'location': 'Rural Communities',
+            'volunteers': 10,
+            'progress': 50,
+            'skills': ['Water Management', 'Community Outreach'],
+            'goals': ['Provide clean water', 'Educate community'],
+            'updates': [{'date': '2023-01-01', 'content': 'Project started'}]
+        },
+        {
+            'project_id': 2,
+            'title': 'Education for All',
+            'location': 'Underserved Areas',
+            'volunteers': 5,
+            'progress': 30,
+            'skills': ['Teaching', 'Fundraising'],
+            'goals': ['Support education', 'Build schools'],
+            'updates': [{'date': '2023-02-01', 'content': 'Fundraising started'}]
+        }
+    ]
+    return jsonify(projects), 200
